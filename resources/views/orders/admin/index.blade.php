@@ -78,6 +78,9 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="mt-6">
+                            {{ $orders->links() }}
+                        </div>
                     @endif
                 </div>
             </div>

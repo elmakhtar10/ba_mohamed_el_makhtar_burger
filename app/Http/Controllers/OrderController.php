@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Burger;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Mail\OrderConfirmationMail;
 use App\Mail\OrderReadyInvoiceMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +70,9 @@ class OrderController extends Controller
             ]);
         }
 
-        DB::transaction(function () use ($items) {
+        $order = null;
+
+        DB::transaction(function () use ($items, &$order) {
             $order = Order::create([
                 'user_id' => auth()->id(),
                 'status' => 'en_attente',
@@ -111,6 +114,11 @@ class OrderController extends Controller
             $order->update(['total_amount' => $total]);
         });
 
+        if ($order) {
+            $order->load('user');
+            Mail::to($order->user?->email)->send(new OrderConfirmationMail($order));
+        }
+
         return redirect()->route('orders.index')->with('success', 'Commande enregistree avec succes.');
     }
 
@@ -137,7 +145,7 @@ class OrderController extends Controller
             }
         }
 
-        $orders = $query->get();
+        $orders = $query->paginate(10)->withQueryString();
 
         return view('orders.admin.index', compact('orders'));
     }
