@@ -1,0 +1,13 @@
+# Project
+/vendor
+/node_modules
+/storage/*.key
+/storage/logs
+/storage/framework
+/storage/app
+/bootstrap/cache
+/.env
+/.env.*
+/.idea
+/.vscode
+/.DS_Store

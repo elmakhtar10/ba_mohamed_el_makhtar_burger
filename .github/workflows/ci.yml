@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - ba_mohamed_el_makhtar_burger
+  pull_request:
+    branches:
+      - ba_mohamed_el_makhtar_burger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo, pdo_mysql, zip
+
+      - name: Install Composer deps
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Build Docker image
+        run: docker build -t isi-burger:ci .
