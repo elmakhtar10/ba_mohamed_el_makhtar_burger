@@ -65,7 +65,7 @@ Workflow dans `.github/workflows/ci.yml` :
 - composer install
 - build image docker
 
-Le workflow se declenche automatiquement sur la branche demandee : **nom_prenom_burger**.
+Le workflow se declenche automatiquement sur la branche demandee : **ba_mohamed_el_makhtar_burger**.
 
 ## Notes
 - Les factures PDF sont generees avec DomPDF
