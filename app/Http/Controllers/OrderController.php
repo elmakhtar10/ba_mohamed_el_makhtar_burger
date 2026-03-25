@@ -125,18 +125,26 @@ class OrderController extends Controller
         return view('orders.show', compact('order'));
     }
 
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $orders = Order::with('user')
-            ->orderByDesc('created_at')
-            ->get();
+        $query = Order::with('user', 'payment')->orderByDesc('created_at');
+
+        if ($request->filled('paid')) {
+            if ($request->input('paid') === '1') {
+                $query->whereHas('payment');
+            } elseif ($request->input('paid') === '0') {
+                $query->whereDoesntHave('payment');
+            }
+        }
+
+        $orders = $query->get();
 
         return view('orders.admin.index', compact('orders'));
     }
 
     public function adminShow(Order $order)
     {
-        $order->load('items.burger', 'user');
+        $order->load('items.burger', 'user', 'payment.recorder');
 
         return view('orders.admin.show', compact('order'));
     }

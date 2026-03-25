@@ -20,6 +20,11 @@
                     {{ session('success') }}
                 </div>
             @endif
+            @if($errors->has('payment') || $errors->has('amount'))
+                <div class="mb-6 rounded-md bg-red-50 p-4 text-sm text-red-700">
+                    {{ $errors->first('payment') ?? $errors->first('amount') }}
+                </div>
+            @endif
 
             <div class="mb-6 rounded-md bg-white p-4 shadow-sm sm:rounded-lg">
                 <div class="grid gap-2 text-sm text-gray-600">
@@ -31,12 +36,51 @@
             </div>
 
             <div class="mb-6 rounded-md bg-white p-4 shadow-sm sm:rounded-lg">
+                <h3 class="text-sm font-semibold text-gray-700">Paiement</h3>
+                @if($order->payment)
+                    <div class="mt-2 text-sm text-gray-600">
+                        <p><strong>Montant:</strong> {{ number_format($order->payment->amount, 2) }} FCFA</p>
+                        <p><strong>Date:</strong> {{ $order->payment->paid_at->format('d/m/Y H:i') }}</p>
+                        <p><strong>Enregistre par:</strong> {{ $order->payment->recorder->name ?? 'N/A' }}</p>
+                    </div>
+                    <div class="mt-3">
+                        <a
+                            href="{{ route('orders.admin.payments.receipt', $order) }}"
+                            class="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700"
+                        >
+                            Telecharger le recu
+                        </a>
+                    </div>
+                @else
+                    <form method="POST" action="{{ route('orders.admin.payments.store', $order) }}" class="mt-3 flex flex-wrap items-center gap-3">
+                        @csrf
+                        <label class="text-sm font-medium text-gray-700">Montant</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            name="amount"
+                            value="{{ old('amount', $order->total_amount) }}"
+                            class="w-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            required
+                        >
+                        <button
+                            type="submit"
+                            class="rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                        >
+                            Enregistrer le paiement
+                        </button>
+                    </form>
+                @endif
+            </div>
+
+            <div class="mb-6 rounded-md bg-white p-4 shadow-sm sm:rounded-lg">
                 <form method="POST" action="{{ route('orders.admin.status', $order) }}" class="flex flex-wrap items-center gap-3">
                     @csrf
                     @method('PATCH')
                     <label class="text-sm font-medium text-gray-700">Changer le statut</label>
                     <select name="status" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        @foreach(['en_attente', 'en_preparation', 'prete', 'payee', 'annulee'] as $status)
+                        @foreach(['en_attente', 'en_preparation', 'prete', 'annulee'] as $status)
                             <option value="{{ $status }}" @selected($order->status === $status)>{{ $status }}</option>
                         @endforeach
                     </select>
