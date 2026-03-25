@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Burger;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Mail\OrderReadyInvoiceMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
@@ -145,7 +147,12 @@ class OrderController extends Controller
             'status' => ['required', 'string', 'in:' . implode(',', self::STATUSES)],
         ]);
 
+        $previousStatus = $order->status;
         $order->update(['status' => $data['status']]);
+
+        if ($previousStatus !== 'prete' && $data['status'] === 'prete') {
+            Mail::to($order->user?->email)->send(new OrderReadyInvoiceMail($order));
+        }
 
         return redirect()->route('orders.admin.show', $order)->with('success', 'Statut mis a jour.');
     }
