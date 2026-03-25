@@ -9,8 +9,18 @@ class Burger extends Model
 {
     use HasFactory;
 
+    public const CATEGORIES = [
+        'Classique',
+        'Poulet',
+        'Vegetarien',
+        'Piquant',
+        'Double',
+        'Enfant',
+    ];
+
     protected $fillable = [
         'name',
+        'category',
         'price',
         'image_path',
         'description',

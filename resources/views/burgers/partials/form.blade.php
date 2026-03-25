@@ -1,8 +1,8 @@
 @csrf
 
-<div class="grid gap-6">
-    <div>
-        <label class="block text-sm font-medium text-gray-700">Nom</label>
+    <div class="grid gap-6">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Nom</label>
         <input
             type="text"
             name="name"
@@ -13,9 +13,27 @@
         @error('name')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
         @enderror
-    </div>
+        </div>
 
-    <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Categorie</label>
+            <select
+                name="category"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            >
+                <option value="">-- Choisir --</option>
+                @foreach(\App\Models\Burger::CATEGORIES as $category)
+                    <option value="{{ $category }}" @selected(old('category', $burger->category ?? '') === $category)>
+                        {{ $category }}
+                    </option>
+                @endforeach
+            </select>
+            @error('category')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2">
         <div>
             <label class="block text-sm font-medium text-gray-700">Prix</label>
             <input

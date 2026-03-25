@@ -4,6 +4,7 @@ use App\Http\Controllers\BurgerController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StatsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/admin/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.admin.cancel');
         Route::post('/admin/orders/{order}/payments', [PaymentController::class, 'store'])->name('orders.admin.payments.store');
         Route::get('/admin/orders/{order}/payment-receipt', [PaymentController::class, 'receipt'])->name('orders.admin.payments.receipt');
+        Route::get('/admin/stats', [StatsController::class, 'index'])->name('admin.stats');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

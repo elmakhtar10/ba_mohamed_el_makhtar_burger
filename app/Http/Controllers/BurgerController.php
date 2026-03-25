@@ -54,6 +54,7 @@ class BurgerController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'category' => ['nullable', 'string', 'in:' . implode(',', \App\Models\Burger::CATEGORIES)],
             'price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable', 'image', 'max:2048'],
             'description' => ['nullable', 'string'],
@@ -78,6 +79,7 @@ class BurgerController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'category' => ['nullable', 'string', 'in:' . implode(',', \App\Models\Burger::CATEGORIES)],
             'price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable', 'image', 'max:2048'],
             'description' => ['nullable', 'string'],

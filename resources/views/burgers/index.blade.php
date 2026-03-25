@@ -32,6 +32,7 @@
                                     <tr>
                                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Image</th>
                                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Nom</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Categorie</th>
                                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Prix</th>
                                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Stock</th>
                                         <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Statut</th>
@@ -53,6 +54,7 @@
                                                 @endif
                                             </td>
                                             <td class="px-4 py-3 font-medium text-gray-800">{{ $burger->name }}</td>
+                                            <td class="px-4 py-3 text-gray-600">{{ $burger->category ?? 'N/A' }}</td>
                                             <td class="px-4 py-3 text-gray-600">{{ number_format($burger->price, 2) }} FCFA</td>
                                             <td class="px-4 py-3">
                                                 @if($burger->stock > 0)
