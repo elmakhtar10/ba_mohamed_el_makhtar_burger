@@ -8,6 +8,36 @@ use Illuminate\Support\Facades\Storage;
 
 class BurgerController extends Controller
 {
+    public function catalogue(Request $request)
+    {
+        $query = Burger::query()->where('is_archived', false);
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->string('search') . '%');
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->input('min_price'));
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->input('max_price'));
+        }
+
+        $burgers = $query->orderBy('name')->get();
+
+        return view('catalogue.index', compact('burgers'));
+    }
+
+    public function catalogueShow(Burger $burger)
+    {
+        if ($burger->is_archived) {
+            abort(404);
+        }
+
+        return view('catalogue.show', compact('burger'));
+    }
+
     public function index()
     {
         $burgers = Burger::orderByDesc('created_at')->get();

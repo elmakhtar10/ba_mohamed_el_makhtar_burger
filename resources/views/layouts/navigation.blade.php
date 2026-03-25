@@ -15,9 +15,22 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('burgers.index')" :active="request()->routeIs('burgers.*')">
-                        {{ __('Burgers') }}
+                    <x-nav-link :href="route('catalogue.index')" :active="request()->routeIs('catalogue.*')">
+                        {{ __('Catalogue') }}
                     </x-nav-link>
+                    @if(auth()->user()?->hasRole('gestionnaire'))
+                        <x-nav-link :href="route('burgers.index')" :active="request()->routeIs('burgers.*')">
+                            {{ __('Burgers') }}
+                        </x-nav-link>
+                    @endif
+                    <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
+                        {{ __('Commandes') }}
+                    </x-nav-link>
+                    @if(auth()->user()?->hasRole('gestionnaire'))
+                        <x-nav-link :href="route('orders.admin.index')" :active="request()->routeIs('orders.admin.*')">
+                            {{ __('Gestion commandes') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -73,9 +86,22 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('burgers.index')" :active="request()->routeIs('burgers.*')">
-                {{ __('Burgers') }}
+            <x-responsive-nav-link :href="route('catalogue.index')" :active="request()->routeIs('catalogue.*')">
+                {{ __('Catalogue') }}
             </x-responsive-nav-link>
+            @if(auth()->user()?->hasRole('gestionnaire'))
+                <x-responsive-nav-link :href="route('burgers.index')" :active="request()->routeIs('burgers.*')">
+                    {{ __('Burgers') }}
+                </x-responsive-nav-link>
+            @endif
+            <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
+                {{ __('Commandes') }}
+            </x-responsive-nav-link>
+            @if(auth()->user()?->hasRole('gestionnaire'))
+                <x-responsive-nav-link :href="route('orders.admin.index')" :active="request()->routeIs('orders.admin.*')">
+                    {{ __('Gestion commandes') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
