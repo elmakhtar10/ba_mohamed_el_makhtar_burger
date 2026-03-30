@@ -1,8 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Catalogue des burgers
-        </h2>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                Catalogue des burgers
+            </h2>
+            @guest
+                <div class="flex items-center gap-2">
+                    <a
+                        href="{{ route('login') }}"
+                        class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                    >
+                        Se connecter
+                    </a>
+                    @if (Route::has('register'))
+                        <a
+                            href="{{ route('register') }}"
+                            class="inline-flex items-center rounded-md bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-200"
+                        >
+                            Creer un compte
+                        </a>
+                    @endif
+                </div>
+            @endguest
+        </div>
     </x-slot>
 
     <div class="py-12">

@@ -8,17 +8,17 @@ use App\Http\Controllers\StatsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('catalogue.index');
 });
+
+Route::get('/catalogue', [BurgerController::class, 'catalogue'])->name('catalogue.index');
+Route::get('/catalogue/{burger}', [BurgerController::class, 'catalogueShow'])->name('catalogue.show');
 
 Route::get('/dashboard', function () {
     return redirect()->route('catalogue.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/catalogue', [BurgerController::class, 'catalogue'])->name('catalogue.index');
-    Route::get('/catalogue/{burger}', [BurgerController::class, 'catalogueShow'])->name('catalogue.show');
-
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
