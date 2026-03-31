@@ -13,7 +13,7 @@ class BurgerController extends Controller
         $query = Burger::query()->where('is_archived', false);
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->string('search') . '%');
+            $query->where('name', 'ILIKE', '%' . $request->string('search') . '%');
         }
 
         if ($request->filled('min_price')) {
